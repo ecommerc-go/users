@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package users;
+option go_package = "./users";
+
+
+service UserService {
+  // Регистрация пользователя
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse);
+
+  // Аутентификация пользователя
+  rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
+
+  // Получение профиля
+  rpc GetProfile (GetProfileRequest) returns (GetProfileResponse);
+
+  // Обновление профиля
+  rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
+
+  // Удаление профиля
+  rpc DeleteProfile (DeleteProfileRequest) returns (DeleteProfileResponse);
+}
+
+// Регистрация
+message RegisterUserRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string address = 4;
+}
+
+message RegisterUserResponse {
+  string user_id = 1;
+}
+
+// Аутентификация
+message LoginUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  string access_token = 1;
+}
+
+// Профиль пользователя
+message UserProfile {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  string address = 4;
+  string created_at = 5;
+}
+
+// Получение профиля
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message GetProfileResponse {
+  UserProfile profile = 1;
+}
+
+// Обновление профиля
+message UpdateProfileRequest {
+  string user_id = 1;
+  string name = 2; 
+  string address = 3;
+}
+
+message UpdateProfileResponse {
+  bool success = 1;
+}
+
+// Удаление профиля
+message DeleteProfileRequest {
+  string user_id = 1;
+}
+
+message DeleteProfileResponse {
+  bool success = 1;
+}
