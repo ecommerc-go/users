@@ -44,14 +44,14 @@ func (s *Implementation) RegisterUser(ctx context.Context, req *users.RegisterUs
 // 	}, nil
 // }
 
-// func (s *Implementation) GetProfile(ctx context.Context, req *users.GetProfileRequest) (*users.GetProfileResponse, error) {
-// 	data, err := s.UserService.GetProfile(ctx, req.UserId)
-// 	if err != nil {
-// 		fmt.Println("Ошибка")
-// 	}
+func (s *Implementation) GetProfile(ctx context.Context, req *users.GetProfileRequest) (*users.GetProfileResponse, error) {
+	data, err := s.UserService.GetProfile(ctx, req.UserId)
+	if err != nil {
+		fmt.Println("Ошибка")
+	}
 
-// 	return UserProfileToProto(&data.Profile), nil
-// }
+	return UserProfileToProto(&data.Profile), nil
+}
 
 // func (s *Implementation) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequest) (*users.UpdateProfileResponse, error) {
 // 	err := s.UserService.UpdateProfile(ctx, UpdateProfileFromProto(req))
@@ -66,15 +66,15 @@ func (s *Implementation) RegisterUser(ctx context.Context, req *users.RegisterUs
 // 	}, nil
 // }
 
-// func (s *Implementation) DeleteProfile(ctx context.Context, req *users.DeleteProfileRequest) (*users.DeleteProfileResponse, error) {
-// 	err := s.UserService.DeleteProfile(ctx, req.UserId)
-// 	if err != nil {
-// 		return &users.DeleteProfileResponse{
-// 			Success: false,
-// 		}, err
-// 	}
+func (s *Implementation) DeleteProfile(ctx context.Context, req *users.DeleteProfileRequest) (*users.DeleteProfileResponse, error) {
+	err := s.UserService.DeleteProfile(ctx, req.UserId)
+	if err != nil {
+		return &users.DeleteProfileResponse{
+			Success: false,
+		}, err
+	}
 
-// 	return &users.DeleteProfileResponse{
-// 		Success: true,
-// 	}, nil
-// }
+	return &users.DeleteProfileResponse{
+		Success: true,
+	}, nil
+}
