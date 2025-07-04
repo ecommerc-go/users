@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ecommerc-go/users/internal/service"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -19,45 +18,41 @@ var (
 )
 
 func NewRepository(conn *sqlx.DB) *Repository {
-
 	return &Repository{conn: conn}
 }
 
-func (r *Repository) CreateUser(ctx context.Context, user *service.RegisterUserRequest) (*service.RegisterUserResponse, error) {
+func (r *Repository) CreateUser(ctx context.Context, user *RepoRegisterReq) (string, error) {
 	query := `INSERT INTO users (email, password_hash, name, address) 
 	          VALUES ($1, $2, $3, $4)
 	          RETURNING id`
 
-	var createdUser string
+	var UserId string
 	err := r.conn.QueryRowContext(ctx, query,
 		user.Email, user.Password, user.Name, user.Address).
-		Scan(&createdUser)
+		Scan(&UserId)
 	fmt.Println(err)
 	if err != nil {
-		return nil, errors.New("failed to create user")
+		//лог
+		return "", errors.New("failed to create user")
 	}
-	fmt.Println(createdUser)
-	return &service.RegisterUserResponse{
-		Id: string(createdUser),
-	}, nil
+
+	return UserId, nil
 }
 
-func (r *Repository) GetUser(ctx context.Context, id string) (*service.GetProfileResponse, error) {
+func (r *Repository) GetUser(ctx context.Context, id string) (*RepoUserProfile, error) {
 	query := `SELECT email, name, address 
 	          FROM users WHERE id=$1`
 
-	var profile service.UserProfile
+	var profile RepoUserProfile
 	err := r.conn.QueryRowContext(ctx, query,
 		id).
 		Scan(&profile.Email, &profile.Name, &profile.Address)
 	fmt.Println(err)
-	fmt.Println()
 	if err != nil {
-		return nil, errors.New("failed to create user")
+		// добавить лог
+		return nil, errors.New("failed to get user")
 	}
-	return &service.GetProfileResponse{
-		Profile: profile,
-	}, nil
+	return &profile, nil
 }
 
 func (r *Repository) DeleteUser(ctx context.Context, id string) error {
@@ -65,6 +60,7 @@ func (r *Repository) DeleteUser(ctx context.Context, id string) error {
 
 	_, err := r.conn.ExecContext(ctx, query, id)
 	if err != nil {
+		//лог
 		return errors.New("user dont delete")
 	}
 	return nil

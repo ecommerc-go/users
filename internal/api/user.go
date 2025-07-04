@@ -20,16 +20,12 @@ func NewImplementation(UserService service.UserService) *Implementation {
 }
 
 func (s *Implementation) RegisterUser(ctx context.Context, req *users.RegisterUserRequest) (*users.RegisterUserResponse, error) {
-	data, err := s.UserService.RegisterUser(ctx, RegisterUserFromProto(req))
+	id, err := s.UserService.RegisterUser(ctx, RegisterUserFromProto(req))
 	if err != nil {
 		fmt.Println("Ошибка")
 	}
-	if data == nil {
-		return nil, fmt.Errorf("получен nil-пользователь без ошибки")
-	}
-
 	return &users.RegisterUserResponse{
-		UserId: data.Id,
+		UserId: id,
 	}, nil
 }
 
@@ -50,7 +46,7 @@ func (s *Implementation) GetProfile(ctx context.Context, req *users.GetProfileRe
 		fmt.Println("Ошибка")
 	}
 
-	return UserProfileToProto(&data.Profile), nil
+	return UserProfileToProto(data), nil
 }
 
 // func (s *Implementation) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequest) (*users.UpdateProfileResponse, error) {

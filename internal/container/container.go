@@ -7,7 +7,7 @@ import (
 	"github.com/ecommerc-go/users/internal/api"
 	"github.com/ecommerc-go/users/internal/config"
 	"github.com/ecommerc-go/users/internal/repository"
-	service "github.com/ecommerc-go/users/internal/service/user"
+	"github.com/ecommerc-go/users/internal/service"
 	"github.com/jmoiron/sqlx"
 )
 

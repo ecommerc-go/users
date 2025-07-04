@@ -1,14 +1,10 @@
 package service
 
-type RegisterUserRequest struct {
+type SvcRegisterRequest struct {
 	Email    string
 	Password string
 	Name     string
 	Address  string
-}
-
-type RegisterUserResponse struct {
-	Id string
 }
 
 type LoginUserRequest struct {
@@ -20,20 +16,12 @@ type LoginUserResponse struct {
 	Access_token string
 }
 
-type GetProfileRequest struct {
-	ID string
-}
-
-type UserProfile struct {
+type SvcUserProfile struct {
 	Id         string
 	Email      string
 	Name       string
 	Address    string
 	Created_at string
-}
-
-type GetProfileResponse struct {
-	Profile UserProfile
 }
 
 type UpdateProfileRequest struct {
