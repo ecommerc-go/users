@@ -5,8 +5,8 @@ import (
 	"github.com/ecommerc-go/users/pkg/users"
 )
 
-func RegisterUserFromProto(data *users.RegisterUserRequest) *service.RegisterUserRequest {
-	return &service.RegisterUserRequest{
+func RegisterUserFromProto(data *users.RegisterUserRequest) *service.SvcRegisterRequest {
+	return &service.SvcRegisterRequest{
 		Name:     data.Name,
 		Email:    data.Email,
 		Password: data.Password,
@@ -14,7 +14,7 @@ func RegisterUserFromProto(data *users.RegisterUserRequest) *service.RegisterUse
 	}
 }
 
-func RegisterUserToProto(data *service.RegisterUserRequest) *users.RegisterUserRequest {
+func RegisterUserToProto(data *service.SvcRegisterRequest) *users.RegisterUserRequest {
 	return &users.RegisterUserRequest{
 		Name:     data.Name,
 		Email:    data.Email,
@@ -30,7 +30,7 @@ func LoginUserFromProto(data *users.LoginUserRequest) *service.LoginUserRequest 
 	}
 }
 
-func UserProfileToProto(data *service.UserProfile) *users.GetProfileResponse {
+func UserProfileToProto(data *service.SvcUserProfile) *users.GetProfileResponse {
 	return &users.GetProfileResponse{
 		Profile: &users.UserProfile{
 			UserId:    data.Id,
