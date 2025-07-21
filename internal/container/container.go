@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/ecommerc-go/users/internal/api"
 	"github.com/ecommerc-go/users/internal/config"
-	"github.com/ecommerc-go/users/internal/repository"
+	"github.com/ecommerc-go/users/internal/lib/logger"
+	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"github.com/ecommerc-go/users/internal/service"
+	transport "github.com/ecommerc-go/users/internal/transport/grpc"
 	"github.com/jmoiron/sqlx"
 )
 
 type Container struct {
 	Config *config.Config
-	Api    *api.Implementation
+	Api    *transport.Implementation
 }
 
 func NewContainer() *Container {
@@ -29,11 +30,13 @@ func NewContainer() *Container {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// инициализация логгера
+	logger.InitLogger(cfg.Service.Mode)
 
 	repos := repository.NewRepository(conn)
-	serv := service.NewService(repos)
+	serv := service.NewService(repos, cfg.JWTSecret.JWTSECRET)
 
-	api := api.NewImplementation(serv)
+	api := transport.NewImplementation(serv)
 
 	return &Container{
 		Config: cfg,

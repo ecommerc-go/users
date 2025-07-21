@@ -8,11 +8,14 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
+// Config структура для конфига
 type Config struct {
-	Postgres Postgres
-	Service  Service
+	Postgres  Postgres
+	Service   Service
+	JWTSecret JWTSECRET
 }
 
+// Postgres содержит поля конфигурации для подключения к базе данных PostgreSQL.
 type Postgres struct {
 	Host     string `env:"POSTGRES_HOST"`
 	Port     string `env:"PG_PORT"`
@@ -21,8 +24,13 @@ type Postgres struct {
 	Database string `env:"PG_DATABASE_NAME"`
 }
 
+type JWTSECRET struct {
+	JWTSECRET string `env:"JWT_SECRET"`
+}
+
 type Service struct {
 	Port string `env:"GRPC_PORT"`
+	Mode string `env:"MODE"`
 }
 
 func MustLoad() *Config {

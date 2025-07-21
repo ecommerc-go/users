@@ -40,7 +40,7 @@ message LoginUserRequest {
 }
 
 message LoginUserResponse {
-  string access_token = 1;
+  string jwt_token = 1;
 }
 
 // Профиль пользователя
