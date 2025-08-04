@@ -1,35 +1,53 @@
+version: "2"
+
+setup:
+  go: "1.24"
+
 run:
   concurrency: 8
   timeout: 10m
-  issues-exit-code: 1
   tests: true
 
 output:
-  formats:
-    - format: colored-line-number
+  format: colored-line-number
   print-issued-lines: true
   print-linter-name: true
 
 linters:
   enable:
-    - goimports
     - errcheck
     - gosec
     - govet
     - ineffassign
     - revive
-    - typecheck
     - unused
+    - staticcheck
+  disable:
+    - wsl
+
+linters-settings:
+  govet:
+    check-shadowing: true
+    enable:
+      - loopclosure
+  revive:
+    severity: warning
+    rules:
+      - name: exported
+        disabled: true
+      - name: package-comments
+        disabled: true
 
 issues:
   exclude-use-default: false
   exclude:
-    - G104 # _ instead of err checks
-    - exported func .* returns unexported type .*, which can be annoying to use
-    - should have a package comment
-    - don't use an underscore in package name
+    - "G104"  # Игнорирование ошибок
+    - 'exported func .* returns unexported type .*'
+    - 'don\t use an underscore in package name'
   exclude-files:
-    - \.pb\.go$
-    - \.pb\.gw\.go$
+    - '.*\.pb\.go$'
+    - '.*\.pb\.gw\.go$'
   exclude-dirs:
     - bin
+    - vendor
+    - .git
