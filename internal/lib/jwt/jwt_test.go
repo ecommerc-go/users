@@ -9,12 +9,11 @@ import (
 
 func TestCreateToken_Basic(t *testing.T) {
 
-	secret := "super-secret-key-123456"
+	secret := "secret"
 	service := NewJWTService(secret)
 	userID := "user12345678"
 	token := service.CreateToken(userID)
 
-	// 2. Тестовые данные - разные случаи userID
 	testCases := []struct {
 		token     string
 		name      string

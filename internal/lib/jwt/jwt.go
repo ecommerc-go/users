@@ -14,7 +14,6 @@ func NewJWTService(secret string) *JWTService {
 	return &JWTService{secret: secret}
 }
 
-// CreateToken создает JWT токен для пользователя
 func (s *JWTService) CreateToken(userID string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,
