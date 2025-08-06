@@ -83,7 +83,8 @@ func (r *Service) LoginUser(ctx context.Context, req *domain.LoginUser) (string,
 	}
 
 	// 3. Генерация токена
-	jwtToken := jwt.CreateJWTToken(creds.ID, r.JWT_SECRET)
+	jwtSrv := jwt.NewJWTService(r.JWT_SECRET)
+	jwtToken := jwtSrv.CreateToken(creds.ID)
 
 	return jwtToken, nil
 }

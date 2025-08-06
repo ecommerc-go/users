@@ -6,15 +6,23 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// CreateJWTToken создание токена с подписью
-func CreateJWTToken(id string, secret string) string {
+type JWTService struct {
+	secret string
+}
+
+func NewJWTService(secret string) *JWTService {
+	return &JWTService{secret: secret}
+}
+
+// CreateToken создает JWT токен для пользователя
+func (s *JWTService) CreateToken(userID string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": id,
-		"exp":     time.Now().Add(24 * time.Hour).Unix(), // Срок - 24 часа
+		"user_id": userID,
+		"exp":     time.Now().Add(24 * time.Hour).Unix(),
 	})
 
 	// Подписываем секретом
-	tokenString, err := token.SignedString([]byte(secret))
+	tokenString, err := token.SignedString([]byte(s.secret))
 	if err != nil {
 		panic(err)
 	}
