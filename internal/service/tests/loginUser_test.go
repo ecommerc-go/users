@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/ecommerc-go/users/internal/lib/jwt"
-	"github.com/ecommerc-go/users/internal/models"
+
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	repoMocks "github.com/ecommerc-go/users/internal/repository/postgress/mocks"
 	"github.com/ecommerc-go/users/internal/service"
@@ -21,7 +22,7 @@ func TestLoginUser(t *testing.T) {
 
 	type args struct {
 		ctx context.Context
-		req *models.LoginUserRequest
+		req *domain.LoginUser
 	}
 
 	var (
@@ -30,7 +31,7 @@ func TestLoginUser(t *testing.T) {
 		userID   = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 		email    = "den@yandex.ru"
 		password = "12345678"
-		req      = &models.LoginUserRequest{
+		req      = &domain.LoginUser{
 			Email:    email,
 			Password: password,
 		}
@@ -54,9 +55,9 @@ func TestLoginUser(t *testing.T) {
 			err:  nil,
 			userRepositoryMock: func(mc *minimock.Controller) repository.UserRepository {
 				mock := repoMocks.NewUserRepositoryMock(mc)
-				mock.GetCredentialsMock.Set(func(ctx context.Context, email string) (*repository.Creds, error) {
+				mock.GetCredentialsMock.Set(func(ctx context.Context, email string) (*domain.Creds, error) {
 					require.Equal(t, "den@yandex.ru", email)
-					return &repository.Creds{
+					return &domain.Creds{
 						ID:       userID,
 						Login:    email,
 						Password: string(hashedPassword),
@@ -75,7 +76,7 @@ func TestLoginUser(t *testing.T) {
 			err:  fmt.Errorf("email not found"),
 			userRepositoryMock: func(mc *minimock.Controller) repository.UserRepository {
 				mock := repoMocks.NewUserRepositoryMock(mc)
-				mock.GetCredentialsMock.Set(func(ctx context.Context, email string) (*repository.Creds, error) {
+				mock.GetCredentialsMock.Set(func(ctx context.Context, email string) (*domain.Creds, error) {
 					return nil, sql.ErrNoRows
 				})
 				return mock

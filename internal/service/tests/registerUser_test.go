@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	repoMocks "github.com/ecommerc-go/users/internal/repository/postgress/mocks"
 	"github.com/ecommerc-go/users/internal/service"
@@ -21,14 +21,14 @@ func TestRegisterUser(t *testing.T) {
 
 	type args struct {
 		ctx context.Context
-		req *models.RegisterRequest
+		req *domain.RegisterUser
 	}
 
 	var (
 		ctx    = context.Background()
 		mc     = minimock.NewController(t)
 		userID = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-		req    = &models.RegisterRequest{
+		req    = &domain.RegisterUser{
 			Email:    "den@yandex.ru",
 			Password: "12345678",
 			Name:     "Denis",
@@ -53,7 +53,7 @@ func TestRegisterUser(t *testing.T) {
 			err:  nil,
 			userRepositoryMock: func(mc *minimock.Controller) repository.UserRepository {
 				mock := repoMocks.NewUserRepositoryMock(mc)
-				mock.CreateUserMock.Set(func(ctx context.Context, req *models.RegisterRequest) (string, error) {
+				mock.CreateUserMock.Set(func(ctx context.Context, req *domain.RegisterUser) (string, error) {
 					require.Equal(t, "den@yandex.ru", req.Email)
 					require.Equal(t, "Denis", req.Name)
 					require.Equal(t, "Марс", req.Address)
@@ -74,7 +74,7 @@ func TestRegisterUser(t *testing.T) {
 			err:  fmt.Errorf("email already registered"),
 			userRepositoryMock: func(mc *minimock.Controller) repository.UserRepository {
 				mock := repoMocks.NewUserRepositoryMock(mc)
-				mock.CreateUserMock.Set(func(ctx context.Context, req *models.RegisterRequest) (string, error) {
+				mock.CreateUserMock.Set(func(ctx context.Context, req *domain.RegisterUser) (string, error) {
 					return "", errors.New("duplicate key value violates unique constraint")
 				})
 				return mock

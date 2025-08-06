@@ -1,13 +1,13 @@
-package models
+package domain
 
-type RegisterRequest struct {
+type RegisterUser struct {
 	Email    string
 	Password string
 	Name     string
 	Address  string
 }
 
-type LoginUserRequest struct {
+type LoginUser struct {
 	Email    string
 	Password string
 }
@@ -20,8 +20,14 @@ type UserProfile struct {
 	Created_at string
 }
 
-type UpdateProfileRequest struct {
+type UpdateProfile struct {
 	ID      string
 	Name    string
 	Address string
+}
+
+type Creds struct {
+	Login    string
+	Password string
+	ID       string
 }

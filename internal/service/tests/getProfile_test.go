@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repoMocks "github.com/ecommerc-go/users/internal/repository/postgress/mocks"
 	"github.com/ecommerc-go/users/internal/service"
 	"github.com/gojuno/minimock/v3"
@@ -31,7 +31,7 @@ func TestGetProfile(t *testing.T) {
 		name        string
 		args        args
 		mockSetup   func(*repoMocks.UserRepositoryMock)
-		want        *models.UserProfile
+		want        *domain.UserProfile
 		wantErr     bool
 		errContains string
 	}{
@@ -40,14 +40,14 @@ func TestGetProfile(t *testing.T) {
 			args: args{ctx, userID},
 			mockSetup: func(m *repoMocks.UserRepositoryMock) {
 				m.GetUserMock.Expect(ctx, userID).Return(
-					&models.UserProfile{
+					&domain.UserProfile{
 						ID:      userID,
 						Email:   email,
 						Address: address,
 						Name:    name,
 					}, nil)
 			},
-			want: &models.UserProfile{
+			want: &domain.UserProfile{
 				ID:      userID,
 				Email:   email,
 				Address: address,

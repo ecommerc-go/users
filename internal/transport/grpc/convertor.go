@@ -1,12 +1,12 @@
 package transport
 
 import (
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/ecommerc-go/users/pkg/users"
 )
 
-func RegisterUserFromProto(data *users.RegisterUserRequest) *models.RegisterRequest {
-	return &models.RegisterRequest{
+func RegisterUserFromProto(data *users.RegisterUserRequest) *domain.RegisterUser {
+	return &domain.RegisterUser{
 		Name:     data.Name,
 		Email:    data.Email,
 		Password: data.Password,
@@ -14,7 +14,7 @@ func RegisterUserFromProto(data *users.RegisterUserRequest) *models.RegisterRequ
 	}
 }
 
-func RegisterUserToProto(data *models.RegisterRequest) *users.RegisterUserRequest {
+func RegisterUserToProto(data *domain.RegisterUser) *users.RegisterUserRequest {
 	return &users.RegisterUserRequest{
 		Name:     data.Name,
 		Email:    data.Email,
@@ -23,14 +23,14 @@ func RegisterUserToProto(data *models.RegisterRequest) *users.RegisterUserReques
 	}
 }
 
-func LoginUserFromProto(data *users.LoginUserRequest) *models.LoginUserRequest {
-	return &models.LoginUserRequest{
+func LoginUserFromProto(data *users.LoginUserRequest) *domain.LoginUser {
+	return &domain.LoginUser{
 		Email:    data.Email,
 		Password: data.Password,
 	}
 }
 
-func UserProfileToProto(data *models.UserProfile) *users.GetProfileResponse {
+func UserProfileToProto(data *domain.UserProfile) *users.GetProfileResponse {
 	return &users.GetProfileResponse{
 		Profile: &users.UserProfile{
 			UserId:    data.ID,
@@ -42,8 +42,8 @@ func UserProfileToProto(data *models.UserProfile) *users.GetProfileResponse {
 	}
 }
 
-func UpdateProfileFromProto(data *users.UpdateProfileRequest) *models.UpdateProfileRequest {
-	return &models.UpdateProfileRequest{
+func UpdateProfileFromProto(data *users.UpdateProfileRequest) *domain.UpdateProfile {
+	return &domain.UpdateProfile{
 		ID:      data.UserId,
 		Name:    data.Name,
 		Address: data.Address,

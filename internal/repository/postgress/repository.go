@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -20,7 +20,7 @@ func NewRepository(conn *sqlx.DB) *Repository {
 }
 
 // CreateUser создает нового пользователя в базе данных
-func (r *Repository) CreateUser(ctx context.Context, user *models.RegisterRequest) (string, error) {
+func (r *Repository) CreateUser(ctx context.Context, user *domain.RegisterUser) (string, error) {
 	logger := slog.With(
 		"op", OpCreateUser,
 		"email", user.Email,
@@ -45,7 +45,7 @@ func (r *Repository) CreateUser(ctx context.Context, user *models.RegisterReques
 }
 
 // GetUser получает профиль пользователя по его ID
-func (r *Repository) GetUser(ctx context.Context, id string) (*models.UserProfile, error) {
+func (r *Repository) GetUser(ctx context.Context, id string) (*domain.UserProfile, error) {
 	logger := slog.With(
 		"op", OpGetUser,
 		"user_id", id,
@@ -54,7 +54,7 @@ func (r *Repository) GetUser(ctx context.Context, id string) (*models.UserProfil
 	query := `SELECT email, name, address 
 	          FROM users WHERE id=$1`
 
-	var profile models.UserProfile
+	var profile domain.UserProfile
 	err := r.conn.QueryRowContext(ctx, query,
 		id).
 		Scan(&profile.Email, &profile.Name, &profile.Address)
@@ -83,7 +83,7 @@ func (r *Repository) DeleteUser(ctx context.Context, ID string) error {
 }
 
 // GetCredentials получает учетные данные пользователя по email
-func (r *Repository) GetCredentials(ctx context.Context, email string) (*Creds, error) {
+func (r *Repository) GetCredentials(ctx context.Context, email string) (*domain.Creds, error) {
 	logger := slog.With(
 		"op", OpGetCredentials,
 		"email", email,
@@ -99,7 +99,7 @@ func (r *Repository) GetCredentials(ctx context.Context, email string) (*Creds, 
 		return nil, err
 	}
 
-	return &Creds{
+	return &domain.Creds{
 		Login:    DBemail,
 		Password: DBPassword,
 		ID:       ID,
@@ -107,7 +107,7 @@ func (r *Repository) GetCredentials(ctx context.Context, email string) (*Creds, 
 }
 
 // UpdateUser обновляет все данные пользователя в базе данных
-func (r *Repository) UpdateUser(ctx context.Context, user *models.UpdateProfileRequest) (int64, error) {
+func (r *Repository) UpdateUser(ctx context.Context, user *domain.UpdateProfile) (int64, error) {
 	logger := slog.With(
 		"op", OpUpdateUser,
 		"user_id", user.ID,

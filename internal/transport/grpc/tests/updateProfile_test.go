@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	srvMock "github.com/ecommerc-go/users/internal/service/mocks"
 	transport "github.com/ecommerc-go/users/internal/transport/grpc"
 	"github.com/ecommerc-go/users/pkg/users"
@@ -39,7 +39,7 @@ func TestUpdateProfile(t *testing.T) {
 				Address: address,
 			},
 			mockSetup: func(m *srvMock.UserServiceMock) {
-				m.UpdateProfileMock.Expect(ctx, &models.UpdateProfileRequest{
+				m.UpdateProfileMock.Expect(ctx, &domain.UpdateProfile{
 					ID:      userID,
 					Name:    name,
 					Address: address,

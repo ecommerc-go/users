@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repoMocks "github.com/ecommerc-go/users/internal/repository/postgress/mocks"
 	"github.com/ecommerc-go/users/internal/service"
 	"github.com/gojuno/minimock/v3"
@@ -16,7 +16,7 @@ import (
 func TestUpdateProfile(t *testing.T) {
 	type args struct {
 		ctx context.Context
-		req *models.UpdateProfileRequest
+		req *domain.UpdateProfile
 	}
 
 	var (
@@ -25,7 +25,7 @@ func TestUpdateProfile(t *testing.T) {
 		userID  = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 		address = "NEZNAYKA"
 		name    = "Den"
-		req     = &models.UpdateProfileRequest{
+		req     = &domain.UpdateProfile{
 			ID:      userID,
 			Name:    name,
 			Address: address,

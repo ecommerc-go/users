@@ -10,8 +10,7 @@ import (
 	mm_atomic "sync/atomic"
 	mm_time "time"
 
-	"github.com/ecommerc-go/users/internal/models"
-	mm_repository "github.com/ecommerc-go/users/internal/repository/postgress"
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/gojuno/minimock/v3"
 )
 
@@ -20,9 +19,9 @@ type UserRepositoryMock struct {
 	t          minimock.Tester
 	finishOnce sync.Once
 
-	funcCreateUser          func(ctx context.Context, user *models.RegisterRequest) (s1 string, err error)
+	funcCreateUser          func(ctx context.Context, user *domain.RegisterUser) (s1 string, err error)
 	funcCreateUserOrigin    string
-	inspectFuncCreateUser   func(ctx context.Context, user *models.RegisterRequest)
+	inspectFuncCreateUser   func(ctx context.Context, user *domain.RegisterUser)
 	afterCreateUserCounter  uint64
 	beforeCreateUserCounter uint64
 	CreateUserMock          mUserRepositoryMockCreateUser
@@ -34,23 +33,23 @@ type UserRepositoryMock struct {
 	beforeDeleteUserCounter uint64
 	DeleteUserMock          mUserRepositoryMockDeleteUser
 
-	funcGetCredentials          func(ctx context.Context, email string) (cp1 *mm_repository.Creds, err error)
+	funcGetCredentials          func(ctx context.Context, email string) (cp1 *domain.Creds, err error)
 	funcGetCredentialsOrigin    string
 	inspectFuncGetCredentials   func(ctx context.Context, email string)
 	afterGetCredentialsCounter  uint64
 	beforeGetCredentialsCounter uint64
 	GetCredentialsMock          mUserRepositoryMockGetCredentials
 
-	funcGetUser          func(ctx context.Context, id string) (up1 *models.UserProfile, err error)
+	funcGetUser          func(ctx context.Context, id string) (up1 *domain.UserProfile, err error)
 	funcGetUserOrigin    string
 	inspectFuncGetUser   func(ctx context.Context, id string)
 	afterGetUserCounter  uint64
 	beforeGetUserCounter uint64
 	GetUserMock          mUserRepositoryMockGetUser
 
-	funcUpdateUser          func(ctx context.Context, user *models.UpdateProfileRequest) (i1 int64, err error)
+	funcUpdateUser          func(ctx context.Context, user *domain.UpdateProfile) (i1 int64, err error)
 	funcUpdateUserOrigin    string
-	inspectFuncUpdateUser   func(ctx context.Context, user *models.UpdateProfileRequest)
+	inspectFuncUpdateUser   func(ctx context.Context, user *domain.UpdateProfile)
 	afterUpdateUserCounter  uint64
 	beforeUpdateUserCounter uint64
 	UpdateUserMock          mUserRepositoryMockUpdateUser
@@ -111,13 +110,13 @@ type UserRepositoryMockCreateUserExpectation struct {
 // UserRepositoryMockCreateUserParams contains parameters of the UserRepository.CreateUser
 type UserRepositoryMockCreateUserParams struct {
 	ctx  context.Context
-	user *models.RegisterRequest
+	user *domain.RegisterUser
 }
 
 // UserRepositoryMockCreateUserParamPtrs contains pointers to parameters of the UserRepository.CreateUser
 type UserRepositoryMockCreateUserParamPtrs struct {
 	ctx  *context.Context
-	user **models.RegisterRequest
+	user **domain.RegisterUser
 }
 
 // UserRepositoryMockCreateUserResults contains results of the UserRepository.CreateUser
@@ -144,7 +143,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) Optional() *mUserRepositoryMo
 }
 
 // Expect sets up expected params for UserRepository.CreateUser
-func (mmCreateUser *mUserRepositoryMockCreateUser) Expect(ctx context.Context, user *models.RegisterRequest) *mUserRepositoryMockCreateUser {
+func (mmCreateUser *mUserRepositoryMockCreateUser) Expect(ctx context.Context, user *domain.RegisterUser) *mUserRepositoryMockCreateUser {
 	if mmCreateUser.mock.funcCreateUser != nil {
 		mmCreateUser.mock.t.Fatalf("UserRepositoryMock.CreateUser mock is already set by Set")
 	}
@@ -192,7 +191,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) ExpectCtxParam1(ctx context.C
 }
 
 // ExpectUserParam2 sets up expected param user for UserRepository.CreateUser
-func (mmCreateUser *mUserRepositoryMockCreateUser) ExpectUserParam2(user *models.RegisterRequest) *mUserRepositoryMockCreateUser {
+func (mmCreateUser *mUserRepositoryMockCreateUser) ExpectUserParam2(user *domain.RegisterUser) *mUserRepositoryMockCreateUser {
 	if mmCreateUser.mock.funcCreateUser != nil {
 		mmCreateUser.mock.t.Fatalf("UserRepositoryMock.CreateUser mock is already set by Set")
 	}
@@ -215,7 +214,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) ExpectUserParam2(user *models
 }
 
 // Inspect accepts an inspector function that has same arguments as the UserRepository.CreateUser
-func (mmCreateUser *mUserRepositoryMockCreateUser) Inspect(f func(ctx context.Context, user *models.RegisterRequest)) *mUserRepositoryMockCreateUser {
+func (mmCreateUser *mUserRepositoryMockCreateUser) Inspect(f func(ctx context.Context, user *domain.RegisterUser)) *mUserRepositoryMockCreateUser {
 	if mmCreateUser.mock.inspectFuncCreateUser != nil {
 		mmCreateUser.mock.t.Fatalf("Inspect function is already set for UserRepositoryMock.CreateUser")
 	}
@@ -240,7 +239,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) Return(s1 string, err error) 
 }
 
 // Set uses given function f to mock the UserRepository.CreateUser method
-func (mmCreateUser *mUserRepositoryMockCreateUser) Set(f func(ctx context.Context, user *models.RegisterRequest) (s1 string, err error)) *UserRepositoryMock {
+func (mmCreateUser *mUserRepositoryMockCreateUser) Set(f func(ctx context.Context, user *domain.RegisterUser) (s1 string, err error)) *UserRepositoryMock {
 	if mmCreateUser.defaultExpectation != nil {
 		mmCreateUser.mock.t.Fatalf("Default expectation is already set for the UserRepository.CreateUser method")
 	}
@@ -256,7 +255,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) Set(f func(ctx context.Contex
 
 // When sets expectation for the UserRepository.CreateUser which will trigger the result defined by the following
 // Then helper
-func (mmCreateUser *mUserRepositoryMockCreateUser) When(ctx context.Context, user *models.RegisterRequest) *UserRepositoryMockCreateUserExpectation {
+func (mmCreateUser *mUserRepositoryMockCreateUser) When(ctx context.Context, user *domain.RegisterUser) *UserRepositoryMockCreateUserExpectation {
 	if mmCreateUser.mock.funcCreateUser != nil {
 		mmCreateUser.mock.t.Fatalf("UserRepositoryMock.CreateUser mock is already set by Set")
 	}
@@ -298,7 +297,7 @@ func (mmCreateUser *mUserRepositoryMockCreateUser) invocationsDone() bool {
 }
 
 // CreateUser implements mm_repository.UserRepository
-func (mmCreateUser *UserRepositoryMock) CreateUser(ctx context.Context, user *models.RegisterRequest) (s1 string, err error) {
+func (mmCreateUser *UserRepositoryMock) CreateUser(ctx context.Context, user *domain.RegisterUser) (s1 string, err error) {
 	mm_atomic.AddUint64(&mmCreateUser.beforeCreateUserCounter, 1)
 	defer mm_atomic.AddUint64(&mmCreateUser.afterCreateUserCounter, 1)
 
@@ -807,7 +806,7 @@ type UserRepositoryMockGetCredentialsParamPtrs struct {
 
 // UserRepositoryMockGetCredentialsResults contains results of the UserRepository.GetCredentials
 type UserRepositoryMockGetCredentialsResults struct {
-	cp1 *mm_repository.Creds
+	cp1 *domain.Creds
 	err error
 }
 
@@ -911,7 +910,7 @@ func (mmGetCredentials *mUserRepositoryMockGetCredentials) Inspect(f func(ctx co
 }
 
 // Return sets up results that will be returned by UserRepository.GetCredentials
-func (mmGetCredentials *mUserRepositoryMockGetCredentials) Return(cp1 *mm_repository.Creds, err error) *UserRepositoryMock {
+func (mmGetCredentials *mUserRepositoryMockGetCredentials) Return(cp1 *domain.Creds, err error) *UserRepositoryMock {
 	if mmGetCredentials.mock.funcGetCredentials != nil {
 		mmGetCredentials.mock.t.Fatalf("UserRepositoryMock.GetCredentials mock is already set by Set")
 	}
@@ -925,7 +924,7 @@ func (mmGetCredentials *mUserRepositoryMockGetCredentials) Return(cp1 *mm_reposi
 }
 
 // Set uses given function f to mock the UserRepository.GetCredentials method
-func (mmGetCredentials *mUserRepositoryMockGetCredentials) Set(f func(ctx context.Context, email string) (cp1 *mm_repository.Creds, err error)) *UserRepositoryMock {
+func (mmGetCredentials *mUserRepositoryMockGetCredentials) Set(f func(ctx context.Context, email string) (cp1 *domain.Creds, err error)) *UserRepositoryMock {
 	if mmGetCredentials.defaultExpectation != nil {
 		mmGetCredentials.mock.t.Fatalf("Default expectation is already set for the UserRepository.GetCredentials method")
 	}
@@ -956,7 +955,7 @@ func (mmGetCredentials *mUserRepositoryMockGetCredentials) When(ctx context.Cont
 }
 
 // Then sets up UserRepository.GetCredentials return parameters for the expectation previously defined by the When method
-func (e *UserRepositoryMockGetCredentialsExpectation) Then(cp1 *mm_repository.Creds, err error) *UserRepositoryMock {
+func (e *UserRepositoryMockGetCredentialsExpectation) Then(cp1 *domain.Creds, err error) *UserRepositoryMock {
 	e.results = &UserRepositoryMockGetCredentialsResults{cp1, err}
 	return e.mock
 }
@@ -983,7 +982,7 @@ func (mmGetCredentials *mUserRepositoryMockGetCredentials) invocationsDone() boo
 }
 
 // GetCredentials implements mm_repository.UserRepository
-func (mmGetCredentials *UserRepositoryMock) GetCredentials(ctx context.Context, email string) (cp1 *mm_repository.Creds, err error) {
+func (mmGetCredentials *UserRepositoryMock) GetCredentials(ctx context.Context, email string) (cp1 *domain.Creds, err error) {
 	mm_atomic.AddUint64(&mmGetCredentials.beforeGetCredentialsCounter, 1)
 	defer mm_atomic.AddUint64(&mmGetCredentials.afterGetCredentialsCounter, 1)
 
@@ -1150,7 +1149,7 @@ type UserRepositoryMockGetUserParamPtrs struct {
 
 // UserRepositoryMockGetUserResults contains results of the UserRepository.GetUser
 type UserRepositoryMockGetUserResults struct {
-	up1 *models.UserProfile
+	up1 *domain.UserProfile
 	err error
 }
 
@@ -1254,7 +1253,7 @@ func (mmGetUser *mUserRepositoryMockGetUser) Inspect(f func(ctx context.Context,
 }
 
 // Return sets up results that will be returned by UserRepository.GetUser
-func (mmGetUser *mUserRepositoryMockGetUser) Return(up1 *models.UserProfile, err error) *UserRepositoryMock {
+func (mmGetUser *mUserRepositoryMockGetUser) Return(up1 *domain.UserProfile, err error) *UserRepositoryMock {
 	if mmGetUser.mock.funcGetUser != nil {
 		mmGetUser.mock.t.Fatalf("UserRepositoryMock.GetUser mock is already set by Set")
 	}
@@ -1268,7 +1267,7 @@ func (mmGetUser *mUserRepositoryMockGetUser) Return(up1 *models.UserProfile, err
 }
 
 // Set uses given function f to mock the UserRepository.GetUser method
-func (mmGetUser *mUserRepositoryMockGetUser) Set(f func(ctx context.Context, id string) (up1 *models.UserProfile, err error)) *UserRepositoryMock {
+func (mmGetUser *mUserRepositoryMockGetUser) Set(f func(ctx context.Context, id string) (up1 *domain.UserProfile, err error)) *UserRepositoryMock {
 	if mmGetUser.defaultExpectation != nil {
 		mmGetUser.mock.t.Fatalf("Default expectation is already set for the UserRepository.GetUser method")
 	}
@@ -1299,7 +1298,7 @@ func (mmGetUser *mUserRepositoryMockGetUser) When(ctx context.Context, id string
 }
 
 // Then sets up UserRepository.GetUser return parameters for the expectation previously defined by the When method
-func (e *UserRepositoryMockGetUserExpectation) Then(up1 *models.UserProfile, err error) *UserRepositoryMock {
+func (e *UserRepositoryMockGetUserExpectation) Then(up1 *domain.UserProfile, err error) *UserRepositoryMock {
 	e.results = &UserRepositoryMockGetUserResults{up1, err}
 	return e.mock
 }
@@ -1326,7 +1325,7 @@ func (mmGetUser *mUserRepositoryMockGetUser) invocationsDone() bool {
 }
 
 // GetUser implements mm_repository.UserRepository
-func (mmGetUser *UserRepositoryMock) GetUser(ctx context.Context, id string) (up1 *models.UserProfile, err error) {
+func (mmGetUser *UserRepositoryMock) GetUser(ctx context.Context, id string) (up1 *domain.UserProfile, err error) {
 	mm_atomic.AddUint64(&mmGetUser.beforeGetUserCounter, 1)
 	defer mm_atomic.AddUint64(&mmGetUser.afterGetUserCounter, 1)
 
@@ -1482,13 +1481,13 @@ type UserRepositoryMockUpdateUserExpectation struct {
 // UserRepositoryMockUpdateUserParams contains parameters of the UserRepository.UpdateUser
 type UserRepositoryMockUpdateUserParams struct {
 	ctx  context.Context
-	user *models.UpdateProfileRequest
+	user *domain.UpdateProfile
 }
 
 // UserRepositoryMockUpdateUserParamPtrs contains pointers to parameters of the UserRepository.UpdateUser
 type UserRepositoryMockUpdateUserParamPtrs struct {
 	ctx  *context.Context
-	user **models.UpdateProfileRequest
+	user **domain.UpdateProfile
 }
 
 // UserRepositoryMockUpdateUserResults contains results of the UserRepository.UpdateUser
@@ -1515,7 +1514,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) Optional() *mUserRepositoryMo
 }
 
 // Expect sets up expected params for UserRepository.UpdateUser
-func (mmUpdateUser *mUserRepositoryMockUpdateUser) Expect(ctx context.Context, user *models.UpdateProfileRequest) *mUserRepositoryMockUpdateUser {
+func (mmUpdateUser *mUserRepositoryMockUpdateUser) Expect(ctx context.Context, user *domain.UpdateProfile) *mUserRepositoryMockUpdateUser {
 	if mmUpdateUser.mock.funcUpdateUser != nil {
 		mmUpdateUser.mock.t.Fatalf("UserRepositoryMock.UpdateUser mock is already set by Set")
 	}
@@ -1563,7 +1562,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) ExpectCtxParam1(ctx context.C
 }
 
 // ExpectUserParam2 sets up expected param user for UserRepository.UpdateUser
-func (mmUpdateUser *mUserRepositoryMockUpdateUser) ExpectUserParam2(user *models.UpdateProfileRequest) *mUserRepositoryMockUpdateUser {
+func (mmUpdateUser *mUserRepositoryMockUpdateUser) ExpectUserParam2(user *domain.UpdateProfile) *mUserRepositoryMockUpdateUser {
 	if mmUpdateUser.mock.funcUpdateUser != nil {
 		mmUpdateUser.mock.t.Fatalf("UserRepositoryMock.UpdateUser mock is already set by Set")
 	}
@@ -1586,7 +1585,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) ExpectUserParam2(user *models
 }
 
 // Inspect accepts an inspector function that has same arguments as the UserRepository.UpdateUser
-func (mmUpdateUser *mUserRepositoryMockUpdateUser) Inspect(f func(ctx context.Context, user *models.UpdateProfileRequest)) *mUserRepositoryMockUpdateUser {
+func (mmUpdateUser *mUserRepositoryMockUpdateUser) Inspect(f func(ctx context.Context, user *domain.UpdateProfile)) *mUserRepositoryMockUpdateUser {
 	if mmUpdateUser.mock.inspectFuncUpdateUser != nil {
 		mmUpdateUser.mock.t.Fatalf("Inspect function is already set for UserRepositoryMock.UpdateUser")
 	}
@@ -1611,7 +1610,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) Return(i1 int64, err error) *
 }
 
 // Set uses given function f to mock the UserRepository.UpdateUser method
-func (mmUpdateUser *mUserRepositoryMockUpdateUser) Set(f func(ctx context.Context, user *models.UpdateProfileRequest) (i1 int64, err error)) *UserRepositoryMock {
+func (mmUpdateUser *mUserRepositoryMockUpdateUser) Set(f func(ctx context.Context, user *domain.UpdateProfile) (i1 int64, err error)) *UserRepositoryMock {
 	if mmUpdateUser.defaultExpectation != nil {
 		mmUpdateUser.mock.t.Fatalf("Default expectation is already set for the UserRepository.UpdateUser method")
 	}
@@ -1627,7 +1626,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) Set(f func(ctx context.Contex
 
 // When sets expectation for the UserRepository.UpdateUser which will trigger the result defined by the following
 // Then helper
-func (mmUpdateUser *mUserRepositoryMockUpdateUser) When(ctx context.Context, user *models.UpdateProfileRequest) *UserRepositoryMockUpdateUserExpectation {
+func (mmUpdateUser *mUserRepositoryMockUpdateUser) When(ctx context.Context, user *domain.UpdateProfile) *UserRepositoryMockUpdateUserExpectation {
 	if mmUpdateUser.mock.funcUpdateUser != nil {
 		mmUpdateUser.mock.t.Fatalf("UserRepositoryMock.UpdateUser mock is already set by Set")
 	}
@@ -1669,7 +1668,7 @@ func (mmUpdateUser *mUserRepositoryMockUpdateUser) invocationsDone() bool {
 }
 
 // UpdateUser implements mm_repository.UserRepository
-func (mmUpdateUser *UserRepositoryMock) UpdateUser(ctx context.Context, user *models.UpdateProfileRequest) (i1 int64, err error) {
+func (mmUpdateUser *UserRepositoryMock) UpdateUser(ctx context.Context, user *domain.UpdateProfile) (i1 int64, err error) {
 	mm_atomic.AddUint64(&mmUpdateUser.beforeUpdateUserCounter, 1)
 	defer mm_atomic.AddUint64(&mmUpdateUser.afterUpdateUserCounter, 1)
 
