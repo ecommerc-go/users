@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/ecommerc-go/users/internal/domain"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
@@ -22,7 +23,7 @@ func TestGetCredentional(t *testing.T) {
 	tests := []struct {
 		name   string
 		args   args
-		want   *repository.Creds
+		want   *domain.Creds
 		err    error
 		mockDB func(mock sqlmock.Sqlmock)
 	}{
@@ -32,7 +33,7 @@ func TestGetCredentional(t *testing.T) {
 				ctx:   ctx,
 				email: "den@yandex.ru",
 			},
-			want: &repository.Creds{
+			want: &domain.Creds{
 				Login:    "den@yandex.ru",
 				Password: "123456789",
 				ID:       "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -51,7 +52,7 @@ func TestGetCredentional(t *testing.T) {
 				ctx:   ctx,
 				email: "den@yandex.ru",
 			},
-			want: &repository.Creds{
+			want: &domain.Creds{
 				Login:    "den@yandex.ru",
 				Password: "123456789",
 				ID:       "f47ac10b-58cc-4372-a567-0e02b2c3d479",

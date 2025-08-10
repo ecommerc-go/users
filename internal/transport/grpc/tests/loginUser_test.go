@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	srvMock "github.com/ecommerc-go/users/internal/service/mocks"
 	transport "github.com/ecommerc-go/users/internal/transport/grpc"
 	"github.com/ecommerc-go/users/pkg/users"
@@ -37,7 +37,7 @@ func TestLoginUser(t *testing.T) {
 				Password: password,
 			},
 			mockSetup: func(m *srvMock.UserServiceMock) {
-				m.LoginUserMock.Expect(ctx, &models.LoginUserRequest{
+				m.LoginUserMock.Expect(ctx, &domain.LoginUser{
 					Email:    email,
 					Password: password,
 				}).Return(token, nil)

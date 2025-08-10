@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
@@ -23,7 +23,7 @@ func TestGetUser(t *testing.T) {
 	tests := []struct {
 		name   string
 		args   args
-		want   *models.UserProfile
+		want   *domain.UserProfile
 		err    error
 		mockDB func(mock sqlmock.Sqlmock)
 	}{
@@ -33,7 +33,7 @@ func TestGetUser(t *testing.T) {
 				ctx: ctx,
 				id:  "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 			},
-			want: &models.UserProfile{
+			want: &domain.UserProfile{
 				Email:   "den@yandex.ru",
 				Name:    "DEN",
 				Address: "NEZNAYKA",

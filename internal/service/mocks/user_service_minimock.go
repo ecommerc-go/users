@@ -10,7 +10,7 @@ import (
 	mm_atomic "sync/atomic"
 	mm_time "time"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/gojuno/minimock/v3"
 )
 
@@ -26,30 +26,30 @@ type UserServiceMock struct {
 	beforeDeleteProfileCounter uint64
 	DeleteProfileMock          mUserServiceMockDeleteProfile
 
-	funcGetProfile          func(ctx context.Context, id string) (up1 *models.UserProfile, err error)
+	funcGetProfile          func(ctx context.Context, id string) (up1 *domain.UserProfile, err error)
 	funcGetProfileOrigin    string
 	inspectFuncGetProfile   func(ctx context.Context, id string)
 	afterGetProfileCounter  uint64
 	beforeGetProfileCounter uint64
 	GetProfileMock          mUserServiceMockGetProfile
 
-	funcLoginUser          func(ctx context.Context, req *models.LoginUserRequest) (s1 string, err error)
+	funcLoginUser          func(ctx context.Context, req *domain.LoginUser) (s1 string, err error)
 	funcLoginUserOrigin    string
-	inspectFuncLoginUser   func(ctx context.Context, req *models.LoginUserRequest)
+	inspectFuncLoginUser   func(ctx context.Context, req *domain.LoginUser)
 	afterLoginUserCounter  uint64
 	beforeLoginUserCounter uint64
 	LoginUserMock          mUserServiceMockLoginUser
 
-	funcRegisterUser          func(ctx context.Context, req *models.RegisterRequest) (s1 string, err error)
+	funcRegisterUser          func(ctx context.Context, req *domain.RegisterUser) (s1 string, err error)
 	funcRegisterUserOrigin    string
-	inspectFuncRegisterUser   func(ctx context.Context, req *models.RegisterRequest)
+	inspectFuncRegisterUser   func(ctx context.Context, req *domain.RegisterUser)
 	afterRegisterUserCounter  uint64
 	beforeRegisterUserCounter uint64
 	RegisterUserMock          mUserServiceMockRegisterUser
 
-	funcUpdateProfile          func(ctx context.Context, req *models.UpdateProfileRequest) (err error)
+	funcUpdateProfile          func(ctx context.Context, req *domain.UpdateProfile) (err error)
 	funcUpdateProfileOrigin    string
-	inspectFuncUpdateProfile   func(ctx context.Context, req *models.UpdateProfileRequest)
+	inspectFuncUpdateProfile   func(ctx context.Context, req *domain.UpdateProfile)
 	afterUpdateProfileCounter  uint64
 	beforeUpdateProfileCounter uint64
 	UpdateProfileMock          mUserServiceMockUpdateProfile
@@ -463,7 +463,7 @@ type UserServiceMockGetProfileParamPtrs struct {
 
 // UserServiceMockGetProfileResults contains results of the UserService.GetProfile
 type UserServiceMockGetProfileResults struct {
-	up1 *models.UserProfile
+	up1 *domain.UserProfile
 	err error
 }
 
@@ -567,7 +567,7 @@ func (mmGetProfile *mUserServiceMockGetProfile) Inspect(f func(ctx context.Conte
 }
 
 // Return sets up results that will be returned by UserService.GetProfile
-func (mmGetProfile *mUserServiceMockGetProfile) Return(up1 *models.UserProfile, err error) *UserServiceMock {
+func (mmGetProfile *mUserServiceMockGetProfile) Return(up1 *domain.UserProfile, err error) *UserServiceMock {
 	if mmGetProfile.mock.funcGetProfile != nil {
 		mmGetProfile.mock.t.Fatalf("UserServiceMock.GetProfile mock is already set by Set")
 	}
@@ -581,7 +581,7 @@ func (mmGetProfile *mUserServiceMockGetProfile) Return(up1 *models.UserProfile, 
 }
 
 // Set uses given function f to mock the UserService.GetProfile method
-func (mmGetProfile *mUserServiceMockGetProfile) Set(f func(ctx context.Context, id string) (up1 *models.UserProfile, err error)) *UserServiceMock {
+func (mmGetProfile *mUserServiceMockGetProfile) Set(f func(ctx context.Context, id string) (up1 *domain.UserProfile, err error)) *UserServiceMock {
 	if mmGetProfile.defaultExpectation != nil {
 		mmGetProfile.mock.t.Fatalf("Default expectation is already set for the UserService.GetProfile method")
 	}
@@ -612,7 +612,7 @@ func (mmGetProfile *mUserServiceMockGetProfile) When(ctx context.Context, id str
 }
 
 // Then sets up UserService.GetProfile return parameters for the expectation previously defined by the When method
-func (e *UserServiceMockGetProfileExpectation) Then(up1 *models.UserProfile, err error) *UserServiceMock {
+func (e *UserServiceMockGetProfileExpectation) Then(up1 *domain.UserProfile, err error) *UserServiceMock {
 	e.results = &UserServiceMockGetProfileResults{up1, err}
 	return e.mock
 }
@@ -639,7 +639,7 @@ func (mmGetProfile *mUserServiceMockGetProfile) invocationsDone() bool {
 }
 
 // GetProfile implements mm_service.UserService
-func (mmGetProfile *UserServiceMock) GetProfile(ctx context.Context, id string) (up1 *models.UserProfile, err error) {
+func (mmGetProfile *UserServiceMock) GetProfile(ctx context.Context, id string) (up1 *domain.UserProfile, err error) {
 	mm_atomic.AddUint64(&mmGetProfile.beforeGetProfileCounter, 1)
 	defer mm_atomic.AddUint64(&mmGetProfile.afterGetProfileCounter, 1)
 
@@ -795,13 +795,13 @@ type UserServiceMockLoginUserExpectation struct {
 // UserServiceMockLoginUserParams contains parameters of the UserService.LoginUser
 type UserServiceMockLoginUserParams struct {
 	ctx context.Context
-	req *models.LoginUserRequest
+	req *domain.LoginUser
 }
 
 // UserServiceMockLoginUserParamPtrs contains pointers to parameters of the UserService.LoginUser
 type UserServiceMockLoginUserParamPtrs struct {
 	ctx *context.Context
-	req **models.LoginUserRequest
+	req **domain.LoginUser
 }
 
 // UserServiceMockLoginUserResults contains results of the UserService.LoginUser
@@ -828,7 +828,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) Optional() *mUserServiceMockLoginU
 }
 
 // Expect sets up expected params for UserService.LoginUser
-func (mmLoginUser *mUserServiceMockLoginUser) Expect(ctx context.Context, req *models.LoginUserRequest) *mUserServiceMockLoginUser {
+func (mmLoginUser *mUserServiceMockLoginUser) Expect(ctx context.Context, req *domain.LoginUser) *mUserServiceMockLoginUser {
 	if mmLoginUser.mock.funcLoginUser != nil {
 		mmLoginUser.mock.t.Fatalf("UserServiceMock.LoginUser mock is already set by Set")
 	}
@@ -876,7 +876,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) ExpectCtxParam1(ctx context.Contex
 }
 
 // ExpectReqParam2 sets up expected param req for UserService.LoginUser
-func (mmLoginUser *mUserServiceMockLoginUser) ExpectReqParam2(req *models.LoginUserRequest) *mUserServiceMockLoginUser {
+func (mmLoginUser *mUserServiceMockLoginUser) ExpectReqParam2(req *domain.LoginUser) *mUserServiceMockLoginUser {
 	if mmLoginUser.mock.funcLoginUser != nil {
 		mmLoginUser.mock.t.Fatalf("UserServiceMock.LoginUser mock is already set by Set")
 	}
@@ -899,7 +899,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) ExpectReqParam2(req *models.LoginU
 }
 
 // Inspect accepts an inspector function that has same arguments as the UserService.LoginUser
-func (mmLoginUser *mUserServiceMockLoginUser) Inspect(f func(ctx context.Context, req *models.LoginUserRequest)) *mUserServiceMockLoginUser {
+func (mmLoginUser *mUserServiceMockLoginUser) Inspect(f func(ctx context.Context, req *domain.LoginUser)) *mUserServiceMockLoginUser {
 	if mmLoginUser.mock.inspectFuncLoginUser != nil {
 		mmLoginUser.mock.t.Fatalf("Inspect function is already set for UserServiceMock.LoginUser")
 	}
@@ -924,7 +924,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) Return(s1 string, err error) *User
 }
 
 // Set uses given function f to mock the UserService.LoginUser method
-func (mmLoginUser *mUserServiceMockLoginUser) Set(f func(ctx context.Context, req *models.LoginUserRequest) (s1 string, err error)) *UserServiceMock {
+func (mmLoginUser *mUserServiceMockLoginUser) Set(f func(ctx context.Context, req *domain.LoginUser) (s1 string, err error)) *UserServiceMock {
 	if mmLoginUser.defaultExpectation != nil {
 		mmLoginUser.mock.t.Fatalf("Default expectation is already set for the UserService.LoginUser method")
 	}
@@ -940,7 +940,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) Set(f func(ctx context.Context, re
 
 // When sets expectation for the UserService.LoginUser which will trigger the result defined by the following
 // Then helper
-func (mmLoginUser *mUserServiceMockLoginUser) When(ctx context.Context, req *models.LoginUserRequest) *UserServiceMockLoginUserExpectation {
+func (mmLoginUser *mUserServiceMockLoginUser) When(ctx context.Context, req *domain.LoginUser) *UserServiceMockLoginUserExpectation {
 	if mmLoginUser.mock.funcLoginUser != nil {
 		mmLoginUser.mock.t.Fatalf("UserServiceMock.LoginUser mock is already set by Set")
 	}
@@ -982,7 +982,7 @@ func (mmLoginUser *mUserServiceMockLoginUser) invocationsDone() bool {
 }
 
 // LoginUser implements mm_service.UserService
-func (mmLoginUser *UserServiceMock) LoginUser(ctx context.Context, req *models.LoginUserRequest) (s1 string, err error) {
+func (mmLoginUser *UserServiceMock) LoginUser(ctx context.Context, req *domain.LoginUser) (s1 string, err error) {
 	mm_atomic.AddUint64(&mmLoginUser.beforeLoginUserCounter, 1)
 	defer mm_atomic.AddUint64(&mmLoginUser.afterLoginUserCounter, 1)
 
@@ -1138,13 +1138,13 @@ type UserServiceMockRegisterUserExpectation struct {
 // UserServiceMockRegisterUserParams contains parameters of the UserService.RegisterUser
 type UserServiceMockRegisterUserParams struct {
 	ctx context.Context
-	req *models.RegisterRequest
+	req *domain.RegisterUser
 }
 
 // UserServiceMockRegisterUserParamPtrs contains pointers to parameters of the UserService.RegisterUser
 type UserServiceMockRegisterUserParamPtrs struct {
 	ctx *context.Context
-	req **models.RegisterRequest
+	req **domain.RegisterUser
 }
 
 // UserServiceMockRegisterUserResults contains results of the UserService.RegisterUser
@@ -1171,7 +1171,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) Optional() *mUserServiceMock
 }
 
 // Expect sets up expected params for UserService.RegisterUser
-func (mmRegisterUser *mUserServiceMockRegisterUser) Expect(ctx context.Context, req *models.RegisterRequest) *mUserServiceMockRegisterUser {
+func (mmRegisterUser *mUserServiceMockRegisterUser) Expect(ctx context.Context, req *domain.RegisterUser) *mUserServiceMockRegisterUser {
 	if mmRegisterUser.mock.funcRegisterUser != nil {
 		mmRegisterUser.mock.t.Fatalf("UserServiceMock.RegisterUser mock is already set by Set")
 	}
@@ -1219,7 +1219,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) ExpectCtxParam1(ctx context.
 }
 
 // ExpectReqParam2 sets up expected param req for UserService.RegisterUser
-func (mmRegisterUser *mUserServiceMockRegisterUser) ExpectReqParam2(req *models.RegisterRequest) *mUserServiceMockRegisterUser {
+func (mmRegisterUser *mUserServiceMockRegisterUser) ExpectReqParam2(req *domain.RegisterUser) *mUserServiceMockRegisterUser {
 	if mmRegisterUser.mock.funcRegisterUser != nil {
 		mmRegisterUser.mock.t.Fatalf("UserServiceMock.RegisterUser mock is already set by Set")
 	}
@@ -1242,7 +1242,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) ExpectReqParam2(req *models.
 }
 
 // Inspect accepts an inspector function that has same arguments as the UserService.RegisterUser
-func (mmRegisterUser *mUserServiceMockRegisterUser) Inspect(f func(ctx context.Context, req *models.RegisterRequest)) *mUserServiceMockRegisterUser {
+func (mmRegisterUser *mUserServiceMockRegisterUser) Inspect(f func(ctx context.Context, req *domain.RegisterUser)) *mUserServiceMockRegisterUser {
 	if mmRegisterUser.mock.inspectFuncRegisterUser != nil {
 		mmRegisterUser.mock.t.Fatalf("Inspect function is already set for UserServiceMock.RegisterUser")
 	}
@@ -1267,7 +1267,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) Return(s1 string, err error)
 }
 
 // Set uses given function f to mock the UserService.RegisterUser method
-func (mmRegisterUser *mUserServiceMockRegisterUser) Set(f func(ctx context.Context, req *models.RegisterRequest) (s1 string, err error)) *UserServiceMock {
+func (mmRegisterUser *mUserServiceMockRegisterUser) Set(f func(ctx context.Context, req *domain.RegisterUser) (s1 string, err error)) *UserServiceMock {
 	if mmRegisterUser.defaultExpectation != nil {
 		mmRegisterUser.mock.t.Fatalf("Default expectation is already set for the UserService.RegisterUser method")
 	}
@@ -1283,7 +1283,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) Set(f func(ctx context.Conte
 
 // When sets expectation for the UserService.RegisterUser which will trigger the result defined by the following
 // Then helper
-func (mmRegisterUser *mUserServiceMockRegisterUser) When(ctx context.Context, req *models.RegisterRequest) *UserServiceMockRegisterUserExpectation {
+func (mmRegisterUser *mUserServiceMockRegisterUser) When(ctx context.Context, req *domain.RegisterUser) *UserServiceMockRegisterUserExpectation {
 	if mmRegisterUser.mock.funcRegisterUser != nil {
 		mmRegisterUser.mock.t.Fatalf("UserServiceMock.RegisterUser mock is already set by Set")
 	}
@@ -1325,7 +1325,7 @@ func (mmRegisterUser *mUserServiceMockRegisterUser) invocationsDone() bool {
 }
 
 // RegisterUser implements mm_service.UserService
-func (mmRegisterUser *UserServiceMock) RegisterUser(ctx context.Context, req *models.RegisterRequest) (s1 string, err error) {
+func (mmRegisterUser *UserServiceMock) RegisterUser(ctx context.Context, req *domain.RegisterUser) (s1 string, err error) {
 	mm_atomic.AddUint64(&mmRegisterUser.beforeRegisterUserCounter, 1)
 	defer mm_atomic.AddUint64(&mmRegisterUser.afterRegisterUserCounter, 1)
 
@@ -1481,13 +1481,13 @@ type UserServiceMockUpdateProfileExpectation struct {
 // UserServiceMockUpdateProfileParams contains parameters of the UserService.UpdateProfile
 type UserServiceMockUpdateProfileParams struct {
 	ctx context.Context
-	req *models.UpdateProfileRequest
+	req *domain.UpdateProfile
 }
 
 // UserServiceMockUpdateProfileParamPtrs contains pointers to parameters of the UserService.UpdateProfile
 type UserServiceMockUpdateProfileParamPtrs struct {
 	ctx *context.Context
-	req **models.UpdateProfileRequest
+	req **domain.UpdateProfile
 }
 
 // UserServiceMockUpdateProfileResults contains results of the UserService.UpdateProfile
@@ -1513,7 +1513,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) Optional() *mUserServiceMo
 }
 
 // Expect sets up expected params for UserService.UpdateProfile
-func (mmUpdateProfile *mUserServiceMockUpdateProfile) Expect(ctx context.Context, req *models.UpdateProfileRequest) *mUserServiceMockUpdateProfile {
+func (mmUpdateProfile *mUserServiceMockUpdateProfile) Expect(ctx context.Context, req *domain.UpdateProfile) *mUserServiceMockUpdateProfile {
 	if mmUpdateProfile.mock.funcUpdateProfile != nil {
 		mmUpdateProfile.mock.t.Fatalf("UserServiceMock.UpdateProfile mock is already set by Set")
 	}
@@ -1561,7 +1561,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) ExpectCtxParam1(ctx contex
 }
 
 // ExpectReqParam2 sets up expected param req for UserService.UpdateProfile
-func (mmUpdateProfile *mUserServiceMockUpdateProfile) ExpectReqParam2(req *models.UpdateProfileRequest) *mUserServiceMockUpdateProfile {
+func (mmUpdateProfile *mUserServiceMockUpdateProfile) ExpectReqParam2(req *domain.UpdateProfile) *mUserServiceMockUpdateProfile {
 	if mmUpdateProfile.mock.funcUpdateProfile != nil {
 		mmUpdateProfile.mock.t.Fatalf("UserServiceMock.UpdateProfile mock is already set by Set")
 	}
@@ -1584,7 +1584,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) ExpectReqParam2(req *model
 }
 
 // Inspect accepts an inspector function that has same arguments as the UserService.UpdateProfile
-func (mmUpdateProfile *mUserServiceMockUpdateProfile) Inspect(f func(ctx context.Context, req *models.UpdateProfileRequest)) *mUserServiceMockUpdateProfile {
+func (mmUpdateProfile *mUserServiceMockUpdateProfile) Inspect(f func(ctx context.Context, req *domain.UpdateProfile)) *mUserServiceMockUpdateProfile {
 	if mmUpdateProfile.mock.inspectFuncUpdateProfile != nil {
 		mmUpdateProfile.mock.t.Fatalf("Inspect function is already set for UserServiceMock.UpdateProfile")
 	}
@@ -1609,7 +1609,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) Return(err error) *UserSer
 }
 
 // Set uses given function f to mock the UserService.UpdateProfile method
-func (mmUpdateProfile *mUserServiceMockUpdateProfile) Set(f func(ctx context.Context, req *models.UpdateProfileRequest) (err error)) *UserServiceMock {
+func (mmUpdateProfile *mUserServiceMockUpdateProfile) Set(f func(ctx context.Context, req *domain.UpdateProfile) (err error)) *UserServiceMock {
 	if mmUpdateProfile.defaultExpectation != nil {
 		mmUpdateProfile.mock.t.Fatalf("Default expectation is already set for the UserService.UpdateProfile method")
 	}
@@ -1625,7 +1625,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) Set(f func(ctx context.Con
 
 // When sets expectation for the UserService.UpdateProfile which will trigger the result defined by the following
 // Then helper
-func (mmUpdateProfile *mUserServiceMockUpdateProfile) When(ctx context.Context, req *models.UpdateProfileRequest) *UserServiceMockUpdateProfileExpectation {
+func (mmUpdateProfile *mUserServiceMockUpdateProfile) When(ctx context.Context, req *domain.UpdateProfile) *UserServiceMockUpdateProfileExpectation {
 	if mmUpdateProfile.mock.funcUpdateProfile != nil {
 		mmUpdateProfile.mock.t.Fatalf("UserServiceMock.UpdateProfile mock is already set by Set")
 	}
@@ -1667,7 +1667,7 @@ func (mmUpdateProfile *mUserServiceMockUpdateProfile) invocationsDone() bool {
 }
 
 // UpdateProfile implements mm_service.UserService
-func (mmUpdateProfile *UserServiceMock) UpdateProfile(ctx context.Context, req *models.UpdateProfileRequest) (err error) {
+func (mmUpdateProfile *UserServiceMock) UpdateProfile(ctx context.Context, req *domain.UpdateProfile) (err error) {
 	mm_atomic.AddUint64(&mmUpdateProfile.beforeUpdateProfileCounter, 1)
 	defer mm_atomic.AddUint64(&mmUpdateProfile.afterUpdateProfileCounter, 1)
 

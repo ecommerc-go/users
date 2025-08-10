@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
@@ -17,7 +17,7 @@ func TestUpdateUserl(t *testing.T) {
 
 	type args struct {
 		ctx context.Context
-		req *models.UpdateProfileRequest
+		req *domain.UpdateProfile
 	}
 
 	tests := []struct {
@@ -31,7 +31,7 @@ func TestUpdateUserl(t *testing.T) {
 			name: "update success",
 			args: args{
 				ctx: ctx,
-				req: &models.UpdateProfileRequest{
+				req: &domain.UpdateProfile{
 					ID:      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 					Name:    "DEN",
 					Address: "NEZNAYKA",
@@ -49,7 +49,7 @@ func TestUpdateUserl(t *testing.T) {
 			name: "update rows 0",
 			args: args{
 				ctx: ctx,
-				req: &models.UpdateProfileRequest{
+				req: &domain.UpdateProfile{
 					ID:      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 					Name:    "DEN",
 					Address: "NEZNAYKA",
@@ -67,7 +67,7 @@ func TestUpdateUserl(t *testing.T) {
 			name: "update user error",
 			args: args{
 				ctx: ctx,
-				req: &models.UpdateProfileRequest{
+				req: &domain.UpdateProfile{
 					ID:      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
 					Name:    "DEN",
 					Address: "NEZNAYKA",

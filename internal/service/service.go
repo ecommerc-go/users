@@ -8,8 +8,8 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/ecommerc-go/users/internal/domain"
 	"github.com/ecommerc-go/users/internal/lib/jwt"
-	"github.com/ecommerc-go/users/internal/models"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,7 +30,7 @@ func NewService(db repository.UserRepository, JWTSecret string) *Service {
 }
 
 // RegisterUser регистрирует нового пользователя
-func (r *Service) RegisterUser(ctx context.Context, req *models.RegisterRequest) (string, error) {
+func (r *Service) RegisterUser(ctx context.Context, req *domain.RegisterUser) (string, error) {
 	logger := slog.With(
 		"op", OpRegisterUser,
 		"email", req.Email,
@@ -59,7 +59,7 @@ func (r *Service) RegisterUser(ctx context.Context, req *models.RegisterRequest)
 }
 
 // LoginUser выполняет аутентификацию пользователя
-func (r *Service) LoginUser(ctx context.Context, req *models.LoginUserRequest) (string, error) {
+func (r *Service) LoginUser(ctx context.Context, req *domain.LoginUser) (string, error) {
 	logger := slog.With(
 		"op", OpLoginUser,
 		"email", req.Email,
@@ -83,13 +83,14 @@ func (r *Service) LoginUser(ctx context.Context, req *models.LoginUserRequest) (
 	}
 
 	// 3. Генерация токена
-	jwtToken := jwt.CreateJWTToken(creds.ID, r.JWT_SECRET)
+	jwtSrv := jwt.NewJWTService(r.JWT_SECRET)
+	jwtToken := jwtSrv.CreateToken(creds.ID)
 
 	return jwtToken, nil
 }
 
 // GetProfile получает профиль пользователя по ID
-func (r *Service) GetProfile(ctx context.Context, id string) (*models.UserProfile, error) {
+func (r *Service) GetProfile(ctx context.Context, id string) (*domain.UserProfile, error) {
 	logger := slog.With(
 		"op", OpGetProfile,
 		"user_id", id,
@@ -127,7 +128,7 @@ func (r *Service) DeleteProfile(ctx context.Context, id string) error {
 }
 
 // UpdateProfile редактирует профиль ( name,address)
-func (r *Service) UpdateProfile(ctx context.Context, user *models.UpdateProfileRequest) error {
+func (r *Service) UpdateProfile(ctx context.Context, user *domain.UpdateProfile) error {
 	logger := slog.With(
 		"op", OpUpdateProfile,
 		"user_id", user.ID,

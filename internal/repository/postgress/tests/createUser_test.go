@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	repository "github.com/ecommerc-go/users/internal/repository/postgress"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/require"
@@ -18,7 +18,7 @@ func TestCreateUser(t *testing.T) {
 
 	type args struct {
 		ctx  context.Context
-		user *models.RegisterRequest
+		user *domain.RegisterUser
 	}
 
 	tests := []struct {
@@ -32,7 +32,7 @@ func TestCreateUser(t *testing.T) {
 			name: "create user succes",
 			args: args{
 				ctx: ctx,
-				user: &models.RegisterRequest{
+				user: &domain.RegisterUser{
 					Email:    "den@yandex.ru",
 					Password: "hashedpassword",
 					Name:     "DEN",
@@ -51,7 +51,7 @@ func TestCreateUser(t *testing.T) {
 			name: "create user error",
 			args: args{
 				ctx: ctx,
-				user: &models.RegisterRequest{
+				user: &domain.RegisterUser{
 					Email:    "den@yandex.ru",
 					Password: "hashedpassword",
 					Name:     "DEN",

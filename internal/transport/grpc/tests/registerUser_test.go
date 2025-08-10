@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	srvMock "github.com/ecommerc-go/users/internal/service/mocks"
 	transport "github.com/ecommerc-go/users/internal/transport/grpc"
 	"github.com/ecommerc-go/users/pkg/users"
@@ -44,7 +44,7 @@ func TestRegisterUser(t *testing.T) {
 				Address:  address,
 			},
 			mockSetup: func(m *srvMock.UserServiceMock) {
-				m.RegisterUserMock.Expect(ctx, &models.RegisterRequest{
+				m.RegisterUserMock.Expect(ctx, &domain.RegisterUser{
 					Email:    email,
 					Password: password,
 					Name:     name,
@@ -96,7 +96,7 @@ func TestRegisterUser(t *testing.T) {
 				Address:  address,
 			},
 			mockSetup: func(m *srvMock.UserServiceMock) {
-				m.RegisterUserMock.Expect(ctx, &models.RegisterRequest{
+				m.RegisterUserMock.Expect(ctx, &domain.RegisterUser{
 					Email:    email,
 					Password: password,
 					Name:     name,

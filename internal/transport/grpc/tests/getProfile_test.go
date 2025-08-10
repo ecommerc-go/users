@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ecommerc-go/users/internal/models"
+	"github.com/ecommerc-go/users/internal/domain"
 	srvMock "github.com/ecommerc-go/users/internal/service/mocks"
 	transport "github.com/ecommerc-go/users/internal/transport/grpc"
 	"github.com/ecommerc-go/users/pkg/users"
@@ -20,7 +20,7 @@ func TestGetProfile(t *testing.T) {
 		userID = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 	)
 
-	testProfile := &models.UserProfile{
+	testProfile := &domain.UserProfile{
 		ID:         userID,
 		Email:      "test@example.com",
 		Name:       "Test User",
